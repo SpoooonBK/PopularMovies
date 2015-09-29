@@ -3,12 +3,7 @@ package android.esteban.nyc.popularmovies;
 import android.net.Uri;
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +12,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Created by Spoooon on 8/22/2015.
@@ -28,14 +22,18 @@ import java.util.Properties;
  * It invokes the MovieFactory.class to return an ArrayList of Movie objects
  */
 public class MovieDAO {
+    public static final int SORT_BY_POPULARITY = 0;
+    public static final int SORT_BY_RATING = 1;
+    private static String apiKey;
 
     private static final String LOG_TAG = "POPULAR_MOVIES";
 
-    public static List<Movie> getMovieList(String apiKey){
+    public static List<Movie> getMovieList(String key){
+        apiKey = key;
         String movieListData = null;
         try {
 
-            movieListData = getMovieData(buildURL(apiKey));
+            movieListData = getMovieData(buildURL());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -78,8 +76,8 @@ public class MovieDAO {
         return movieData;
     }
 
-    private static URL buildURL(String apiKey) throws MalformedURLException {
-        String url;
+    private static URL buildURL() throws MalformedURLException {
+
         Uri.Builder builder = new Uri.Builder();
 
         final String MOVIEDB_BASE_URI_ = "api.themoviedb.org";
@@ -88,17 +86,33 @@ public class MovieDAO {
         final String SORT_BY = "sort_by" ;
         final String POPULARITY = "popularity.desc";
         final String API = "api_key";
+        final String RATING = "vote_average.desc";
+        int sortByMethod = MainActivity.preferences.getInt("SORT_BY_METHOD", 0);
 
         Log.d(LOG_TAG, "IN buildURL: " + apiKey);
 
-        builder.scheme("http")
-                .authority(MOVIEDB_BASE_URI_)
-                .appendPath("3")
-                .appendPath("discover")
-                .appendPath("movie")
-                .appendQueryParameter(SORT_BY, POPULARITY)
-                .appendQueryParameter(API, apiKey);
-//            "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=[]"
+        if(sortByMethod == 0) {
+            builder.scheme("http")
+                    .authority(MOVIEDB_BASE_URI_)
+                    .appendPath("3")
+                    .appendPath("discover")
+                    .appendPath("movie")
+                    .appendQueryParameter(SORT_BY, POPULARITY)
+                    .appendQueryParameter(API, apiKey);
+                    //            "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=[]"
+        }
+
+        if(sortByMethod == 1) {
+            builder.scheme("http")
+                    .authority(MOVIEDB_BASE_URI_)
+                    .appendPath("3")
+                    .appendPath("discover")
+                    .appendPath("movie")
+                    .appendQueryParameter(SORT_BY, RATING)
+                    .appendQueryParameter(API, apiKey);
+            //            "http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=[]"
+        }
+
 
         Log.d(LOG_TAG, "URL: " + builder.build().toString());
 

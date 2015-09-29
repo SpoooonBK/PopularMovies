@@ -75,35 +75,69 @@ public class MovieImageAdapter extends BaseAdapter {
         return imageView;
     }
 
-    public void sortByPopularity() {
-
-        List<Movie> tempList = new ArrayList<Movie>();
-
-        for (int i = 0; i < getCount(); i++) {
-            Movie movie = movies.get(i);
-            double moviePopularity = movie.getPopularity();
-
-            if (tempList.size() == 0) {
-                tempList.add(movie);
-            } else {
-
-                int index = 0;
-                while (index < tempList.size()) {
-                    if (moviePopularity == tempList.get(index).getPopularity() ||
-                            moviePopularity > tempList.get(index).getPopularity()) {
-                        tempList.add(index, movie);
-                        break;
-                    }
-                    index++;
-                }
-                if (index == tempList.size()) {
-                    tempList.add(movie);
-                }
-            }
-        }
-        movies = tempList;
+    public void updateGrid(){
         notifyDataSetChanged();
     }
+
+//    public void sortByPopularity() {
+//
+//        List<Movie> tempList = new ArrayList<Movie>();
+//
+//        for (int i = 0; i < getCount(); i++) {
+//            Movie movie = movies.get(i);
+//            double moviePopularity = movie.getPopularity();
+//
+//            if (tempList.size() == 0) {
+//                tempList.add(movie);
+//            } else {
+//
+//                int index = 0;
+//                while (index < tempList.size()) {
+//                    if (moviePopularity == tempList.get(index).getPopularity() ||
+//                            moviePopularity > tempList.get(index).getPopularity()) {
+//                        tempList.add(index, movie);
+//                        break;
+//                    }
+//                    index++;
+//                }
+//                if (index == tempList.size()) {
+//                    tempList.add(movie);
+//                }
+//            }
+//        }
+//        movies = tempList;
+//        notifyDataSetChanged();
+//    }
+//
+//    public void sortByRating() {
+//
+//        List<Movie> tempList = new ArrayList<Movie>();
+//
+//        for (int i = 0; i < getCount(); i++) {
+//            Movie movie = movies.get(i);
+//            double rating = movie.getRating();
+//
+//            if (tempList.size() == 0) {
+//                tempList.add(movie);
+//            } else {
+//
+//                int index = 0;
+//                while (index < tempList.size()) {
+//                    if (rating == tempList.get(index).getRating() ||
+//                            rating > tempList.get(index).getRating()) {
+//                        tempList.add(index, movie);
+//                        break;
+//                    }
+//                    index++;
+//                }
+//                if (index == tempList.size()) {
+//                    tempList.add(movie);
+//                }
+//            }
+//        }
+//        movies = tempList;
+//        notifyDataSetChanged();
+//    }
 
 
 }
