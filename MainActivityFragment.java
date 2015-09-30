@@ -1,5 +1,7 @@
 package android.esteban.nyc.popularmovies;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class MainActivityFragment extends Fragment {
 
+
     public MainActivityFragment() {
     }
 
@@ -24,13 +27,18 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        String apikey = PropertyReader.readProperty(getActivity());
-        Log.d("Popular Movies", "API KEY: " + apikey);
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        if(!preferences.contains("SORT_BY_METHOD")) {
+            editor.putInt("SORT_BY_METHOD", MovieDAO.SORT_BY_POPULARITY);
+            editor.commit();
+        }
+        MovieDAO.setsSortByMethod(preferences.getInt("SORT_BY_METHOD", 0));
+
 
         List<Movie> movies = null;
         GetMoviesTask getMoviesTask = new GetMoviesTask();
-
-        getMoviesTask.execute(apikey);
+        getMoviesTask.execute();
         try {
             movies = getMoviesTask.get();
         } catch (InterruptedException e) {
@@ -49,7 +57,10 @@ public class MainActivityFragment extends Fragment {
         return rootView;
     }
 
-//    private void populateGrid(final View rootview, GridView grid, List<Movie> movies){
+
+
+
+    //    private void populateGrid(final View rootview, GridView grid, List<Movie> movies){
 //
 //        int rowCount;
 //        int colCount = 2;

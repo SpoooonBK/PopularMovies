@@ -15,8 +15,6 @@ public class GetMoviesTask extends AsyncTask<String , Void, List<Movie>> {
 
     @Override
     protected List<Movie> doInBackground(String... params) {
-        String apiKey = params[0];
-        Log.d("popular", "In AsyncTask: " + apiKey);
-        return MovieDAO.getMovieList(apiKey);
+        return MovieDAO.getMovieList();
     }
 }

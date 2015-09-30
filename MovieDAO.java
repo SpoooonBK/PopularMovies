@@ -24,12 +24,12 @@ import java.util.List;
 public class MovieDAO {
     public static final int SORT_BY_POPULARITY = 0;
     public static final int SORT_BY_RATING = 1;
+    private static int sSortByMethod;
     private static String apiKey;
 
     private static final String LOG_TAG = "POPULAR_MOVIES";
 
-    public static List<Movie> getMovieList(String key){
-        apiKey = key;
+    public static List<Movie> getMovieList(){
         String movieListData = null;
         try {
 
@@ -87,11 +87,10 @@ public class MovieDAO {
         final String POPULARITY = "popularity.desc";
         final String API = "api_key";
         final String RATING = "vote_average.desc";
-        int sortByMethod = MainActivity.preferences.getInt("SORT_BY_METHOD", 0);
 
         Log.d(LOG_TAG, "IN buildURL: " + apiKey);
 
-        if(sortByMethod == 0) {
+        if(sSortByMethod == 0) {
             builder.scheme("http")
                     .authority(MOVIEDB_BASE_URI_)
                     .appendPath("3")
@@ -102,7 +101,7 @@ public class MovieDAO {
                     //            "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=[]"
         }
 
-        if(sortByMethod == 1) {
+        if(sSortByMethod == 1) {
             builder.scheme("http")
                     .authority(MOVIEDB_BASE_URI_)
                     .appendPath("3")
@@ -119,4 +118,12 @@ public class MovieDAO {
         return new URL(builder.build().toString());
     }
 
+    public static void setsSortByMethod(int sortByMethod) {
+        MovieDAO.sSortByMethod = sSortByMethod;
+    }
+
+
+    public static void setApiKey(String apiKey) {
+        MovieDAO.apiKey = apiKey;
+    }
 }

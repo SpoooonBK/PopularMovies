@@ -67,6 +67,7 @@ public class MovieImageAdapter extends BaseAdapter {
                 detailIntent.putExtra("OVERVIEW", movies.get(position).getOverview());
                 detailIntent.putExtra("POSTER_PATH", movies.get(position).getPosterPath());
                 detailIntent.putExtra("POPULARITY", movies.get(position).getPopularity());
+                detailIntent.putExtra("RATING", movies.get(position).getRating());
                 context.startActivity(detailIntent);
             }
         });

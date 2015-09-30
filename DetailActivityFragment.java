@@ -53,6 +53,13 @@ public class DetailActivityFragment extends Fragment {
             popularity.setText(pop.toString());
         }
 
+        if (intent.hasExtra("RATING")){
+            TextView popularity = (TextView)rootView.findViewById(R.id.rating);
+            Double pop = intent.getDoubleExtra("RATING", 0);
+            popularity.setText(pop.toString());
+        }
+
+
 
         return rootView;
     }
